@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { Todo } from './todo.model';
 
 @Injectable()
 export class TodoService {
-  private todo = [];
+  private todo: Todo[] = [];
 
-  getAllTodo() {
+  getAllTodo(): Todo[] {
     return this.todo;
   }
 }
