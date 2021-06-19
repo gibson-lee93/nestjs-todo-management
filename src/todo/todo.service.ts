@@ -32,4 +32,10 @@ export class TodoService {
   deleteTodo(id: string): void {
     this.todo = this.todo.filter((todo) => todo.id !== id);
   }
+
+  updateTodoStatus(id: string, status: TodoStatus): Todo {
+    const todo = this.getTodoById(id);
+    todo.status = status;
+    return todo;
+  }
 }
