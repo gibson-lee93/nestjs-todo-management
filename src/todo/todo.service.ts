@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Todo, TodoStatus } from './todo.model';
 import { v4 as uuid } from 'uuid';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 
 @Injectable()
 export class TodoService {
@@ -9,6 +10,28 @@ export class TodoService {
 
   getAllTodo(): Todo[] {
     return this.todo;
+  }
+
+  getTodoWithFilters(filterDto: GetTodoFilterDto): Todo[] {
+    const { status, search } = filterDto;
+
+    let todo = this.getAllTodo();
+
+    if(status) {
+      todo = todo.filter((todo) => todo.status === status);
+    }
+
+    if(search) {
+      todo = todo.filter((todo) => {
+        if(todo.title.includes(search) || todo.description.includes(search)) {
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    return todo;
   }
 
   getTodoById(id: string): Todo {
