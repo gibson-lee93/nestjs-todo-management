@@ -28,4 +28,8 @@ export class TodoService {
     this.todo.push(todo);
     return todo;
   }
+
+  deleteTodo(id: string): void {
+    this.todo = this.todo.filter((todo) => todo.id !== id);
+  }
 }
