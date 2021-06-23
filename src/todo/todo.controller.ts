@@ -3,6 +3,7 @@ import { TodoService } from './todo.service';
 import { Todo, TodoStatus } from './todo.model';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
+import { UpdateTodoStatusDto } from './dto/update-todo-status.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -35,8 +36,9 @@ export class TodoController {
   @Patch('/:id/status')
   updateTodoStatus(
     @Param('id') id: string,
-    @Body('status') status: TodoStatus
+    @Body() updateTodoStatusDto: UpdateTodoStatusDto
   ): Todo {
+    const { status } = updateTodoStatusDto;
     return this.todoService.updateTodoStatus(id, status);
   }
 }
