@@ -23,11 +23,11 @@ export class TodoController {
   getTodoById(@Param('id') id: string): Promise<Todo> {
     return this.todoService.getTodoById(id);
   }
-  //
-  // @Post()
-  // createTodo(@Body() createTodoDto: CreateTodoDto): Todo {
-  //   return this.todoService.createTodo(createTodoDto);
-  // }
+  
+  @Post()
+  createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+    return this.todoService.createTodo(createTodoDto);
+  }
   //
   // @Delete('/:id')
   // deleteTodo(@Param('id') id: string): void {

@@ -48,21 +48,11 @@ export class TodoService {
 
     return found;
   }
+
+  createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
+    return this.todoRepository.createTodo(createTodoDto);
+  }
   
-  // createTodo(createTodoDto: CreateTodoDto): Todo {
-  //   const { title, description } = createTodoDto;
-  //
-  //   const todo: Todo = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     status:TodoStatus.OPEN,
-  //   };
-  //
-  //   this.todo.push(todo);
-  //   return todo;
-  // }
-  //
   // deleteTodo(id: string): void {
   //   const found = this.getTodoById(id);
   //   this.todo = this.todo.filter((todo) => todo.id !== id);
