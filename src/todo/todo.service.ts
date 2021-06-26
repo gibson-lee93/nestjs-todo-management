@@ -52,11 +52,14 @@ export class TodoService {
   createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
     return this.todoRepository.createTodo(createTodoDto);
   }
-  
-  // deleteTodo(id: string): void {
-  //   const found = this.getTodoById(id);
-  //   this.todo = this.todo.filter((todo) => todo.id !== id);
-  // }
+
+  async deleteTodo(id: string): Promise<void> {
+    const result = await this.todoRepository.delete(id);
+
+    if(result.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+  }
   //
   // updateTodoStatus(id: string, status: TodoStatus): Todo {
   //   const todo = this.getTodoById(id);
