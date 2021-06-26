@@ -2,9 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TodoStatus } from './todo-status.enum';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
+import { TodoRepository } from './todo.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Todo } from './todo.entity';
 
 @Injectable()
 export class TodoService {
+  constructor(
+    @InjectRepository(TodoRepository)
+    private todoRepository: TodoRepository,
+  ) {}
   // getAllTodo(): Todo[] {
   //   return this.todo;
   // }
@@ -31,16 +38,17 @@ export class TodoService {
   //   return todo;
   // }
   //
-  // getTodoById(id: string): Todo {
-  //   const found = this.todo.find((todo) => todo.id === id);
-  //
-  //   if(!found) {
-  //     throw new NotFoundException(`Todo with ID:${id} not found`);
-  //   }
-  //
-  //   return found;
-  // }
-  //
+
+  async getTodoById(id: string): Promise<Todo> {
+    const found = await this.todoRepository.findOne(id);
+
+    if(!found) {
+      throw new NotFoundException(`Todo with ID:${id} not found`);
+    }
+
+    return found;
+  }
+  
   // createTodo(createTodoDto: CreateTodoDto): Todo {
   //   const { title, description } = createTodoDto;
   //

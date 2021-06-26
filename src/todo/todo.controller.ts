@@ -4,6 +4,7 @@ import { TodoStatus } from './todo-status.enum';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { UpdateTodoStatusDto } from './dto/update-todo-status.dto';
+import { Todo } from './todo.entity';
 
 @Controller('todo')
 export class TodoController {
@@ -18,10 +19,10 @@ export class TodoController {
   //   }
   // }
   //
-  // @Get('/:id')
-  // getTodoById(@Param('id') id: string): Todo {
-  //   return this.todoService.getTodoById(id);
-  // }
+  @Get('/:id')
+  getTodoById(@Param('id') id: string): Promise<Todo> {
+    return this.todoService.getTodoById(id);
+  }
   //
   // @Post()
   // createTodo(@Body() createTodoDto: CreateTodoDto): Todo {
