@@ -1,35 +1,31 @@
 import { Controller, Get, Post, Body, Param, Delete, Patch, Query } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { Todo, TodoStatus } from './todo.model';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { UpdateTodoStatusDto } from './dto/update-todo-status.dto';
+import { Todo } from './todo.entity';
 
 @Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
   @Get()
-  getTodo(@Query() filterDto: GetTodoFilterDto): Todo[] {
-    if(Object.keys(filterDto).length) {
-      return this.todoService.getTodoWithFilters(filterDto);
-    } else {
-      return this.todoService.getAllTodo();
-    }
+  getTodo(@Query() filterDto: GetTodoFilterDto): Promise<Todo[]> {
+    return this.todoService.getTodo(filterDto);
   }
 
   @Get('/:id')
-  getTodoById(@Param('id') id: string): Todo {
+  getTodoById(@Param('id') id: string): Promise<Todo> {
     return this.todoService.getTodoById(id);
   }
 
   @Post()
-  createTodo(@Body() createTodoDto: CreateTodoDto): Todo {
+  createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
     return this.todoService.createTodo(createTodoDto);
   }
 
   @Delete('/:id')
-  deleteTodo(@Param('id') id: string): void {
+  deleteTodo(@Param('id') id: string): Promise<void> {
     return this.todoService.deleteTodo(id);
   }
 
@@ -37,7 +33,7 @@ export class TodoController {
   updateTodoStatus(
     @Param('id') id: string,
     @Body() updateTodoStatusDto: UpdateTodoStatusDto
-  ): Todo {
+  ): Promise<Todo> {
     const { status } = updateTodoStatusDto;
     return this.todoService.updateTodoStatus(id, status);
   }
