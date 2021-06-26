@@ -12,32 +12,10 @@ export class TodoService {
     @InjectRepository(TodoRepository)
     private todoRepository: TodoRepository,
   ) {}
-  // getAllTodo(): Todo[] {
-  //   return this.todo;
-  // }
-  //
-  // getTodoWithFilters(filterDto: GetTodoFilterDto): Todo[] {
-  //   const { status, search } = filterDto;
-  //
-  //   let todo = this.getAllTodo();
-  //
-  //   if(status) {
-  //     todo = todo.filter((todo) => todo.status === status);
-  //   }
-  //
-  //   if(search) {
-  //     todo = todo.filter((todo) => {
-  //       if(todo.title.includes(search) || todo.description.includes(search)) {
-  //         return true;
-  //       }
-  //
-  //       return false;
-  //     });
-  //   }
-  //
-  //   return todo;
-  // }
-  //
+
+  getTodo(filterDto: GetTodoFilterDto): Promise<Todo[]> {
+    return this.todoRepository.getTodo(filterDto);
+  }
 
   async getTodoById(id: string): Promise<Todo> {
     const found = await this.todoRepository.findOne(id);
@@ -66,7 +44,7 @@ export class TodoService {
 
     todo.status = status;
     this.todoRepository.save(todo);
-    
+
     return todo;
   }
 }
