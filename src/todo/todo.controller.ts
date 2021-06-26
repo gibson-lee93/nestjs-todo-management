@@ -33,13 +33,13 @@ export class TodoController {
   deleteTodo(@Param('id') id: string): Promise<void> {
     return this.todoService.deleteTodo(id);
   }
-  //
-  // @Patch('/:id/status')
-  // updateTodoStatus(
-  //   @Param('id') id: string,
-  //   @Body() updateTodoStatusDto: UpdateTodoStatusDto
-  // ): Todo {
-  //   const { status } = updateTodoStatusDto;
-  //   return this.todoService.updateTodoStatus(id, status);
-  // }
+
+  @Patch('/:id/status')
+  updateTodoStatus(
+    @Param('id') id: string,
+    @Body() updateTodoStatusDto: UpdateTodoStatusDto
+  ): Promise<Todo> {
+    const { status } = updateTodoStatusDto;
+    return this.todoService.updateTodoStatus(id, status);
+  }
 }

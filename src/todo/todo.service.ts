@@ -60,10 +60,13 @@ export class TodoService {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
   }
-  //
-  // updateTodoStatus(id: string, status: TodoStatus): Todo {
-  //   const todo = this.getTodoById(id);
-  //   todo.status = status;
-  //   return todo;
-  // }
+
+  async updateTodoStatus(id: string, status: TodoStatus): Promise<Todo> {
+    const todo = await this.getTodoById(id);
+
+    todo.status = status;
+    this.todoRepository.save(todo);
+    
+    return todo;
+  }
 }
