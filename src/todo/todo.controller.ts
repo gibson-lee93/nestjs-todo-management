@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  Query,
+  UseGuards
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
@@ -6,8 +17,9 @@ import { UpdateTodoStatusDto } from './dto/update-todo-status.dto';
 import { Todo } from './todo.entity';
 
 @Controller('todo')
+@UseGuards(AuthGuard())
 export class TodoController {
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService) { }
 
   @Get()
   getTodo(@Query() filterDto: GetTodoFilterDto): Promise<Todo[]> {
