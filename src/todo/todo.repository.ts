@@ -3,6 +3,7 @@ import { Todo } from './todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { TodoStatus } from './todo-status.enum';
+import { User } from '../auth/user.entity';
 
 @EntityRepository(Todo)
 export class TodoRepository extends Repository<Todo> {
@@ -25,13 +26,14 @@ export class TodoRepository extends Repository<Todo> {
     return todo;
   }
 
-  async createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
+  async createTodo(createTodoDto: CreateTodoDto, user: User): Promise<Todo> {
     const { title, description } = createTodoDto;
 
     const todo = this.create({
       title,
       description,
       status: TodoStatus.OPEN,
+      user,
     });
 
     await this.save(todo);

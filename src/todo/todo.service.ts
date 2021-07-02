@@ -5,6 +5,7 @@ import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { TodoRepository } from './todo.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './todo.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class TodoService {
@@ -27,8 +28,8 @@ export class TodoService {
     return found;
   }
 
-  createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todoRepository.createTodo(createTodoDto);
+  createTodo(createTodoDto: CreateTodoDto, user: User): Promise<Todo> {
+    return this.todoRepository.createTodo(createTodoDto, user);
   }
 
   async deleteTodo(id: string): Promise<void> {

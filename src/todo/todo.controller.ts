@@ -15,6 +15,8 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { UpdateTodoStatusDto } from './dto/update-todo-status.dto';
 import { Todo } from './todo.entity';
+import { User } from '../auth/user.entity';
+import { GetUser } from '../auth/get-user.decorator';
 
 @Controller('todo')
 @UseGuards(AuthGuard())
@@ -32,8 +34,11 @@ export class TodoController {
   }
 
   @Post()
-  createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todoService.createTodo(createTodoDto);
+  createTodo(
+    @Body() createTodoDto: CreateTodoDto,
+    @GetUser() user: User,
+  ): Promise<Todo> {
+    return this.todoService.createTodo(createTodoDto, user);
   }
 
   @Delete('/:id')
