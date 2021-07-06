@@ -18,7 +18,7 @@ export class TodoRepository extends Repository<Todo> {
 
     if(search) {
       query.andWhere(
-        'LOWER(todo.title) LIKE LOWER(:search) OR LOWER(todo.description) LIKE LOWER(:search)',
+        '(LOWER(todo.title) LIKE LOWER(:search) OR LOWER(todo.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
     }
