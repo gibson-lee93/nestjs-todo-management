@@ -52,7 +52,7 @@ export class TodoController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<void> {
-    return this.todoService.deleteTodo(id);
+    return this.todoService.deleteTodo(id, user);
   }
 
   @Patch('/:id/status')
