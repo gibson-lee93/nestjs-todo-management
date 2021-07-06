@@ -3,12 +3,14 @@ import { Todo } from './todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { GetTodoFilterDto } from './dto/get-todo-filter.dto';
 import { TodoStatus } from './todo-status.enum';
+import { User } from '../auth/user.entity';
 
 @EntityRepository(Todo)
 export class TodoRepository extends Repository<Todo> {
-  async getTodo(filterDto: GetTodoFilterDto): Promise<Todo[]> {
+  async getTodo(filterDto: GetTodoFilterDto, user: User): Promise<Todo[]> {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('todo');
+    query.where({ user });
 
     if(status) {
       query.andWhere('todo.status = :status', { status });
@@ -16,7 +18,7 @@ export class TodoRepository extends Repository<Todo> {
 
     if(search) {
       query.andWhere(
-        'LOWER(todo.title) LIKE LOWER(:search) OR LOWER(todo.description) LIKE LOWER(:search)',
+        '(LOWER(todo.title) LIKE LOWER(:search) OR LOWER(todo.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
     }
@@ -25,13 +27,14 @@ export class TodoRepository extends Repository<Todo> {
     return todo;
   }
 
-  async createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
+  async createTodo(createTodoDto: CreateTodoDto, user: User): Promise<Todo> {
     const { title, description } = createTodoDto;
 
     const todo = this.create({
       title,
       description,
       status: TodoStatus.OPEN,
+      user,
     });
 
     await this.save(todo);
