@@ -7,9 +7,10 @@ import { User } from '../auth/user.entity';
 
 @EntityRepository(Todo)
 export class TodoRepository extends Repository<Todo> {
-  async getTodo(filterDto: GetTodoFilterDto): Promise<Todo[]> {
+  async getTodo(filterDto: GetTodoFilterDto, user: User): Promise<Todo[]> {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('todo');
+    query.where({ user });
 
     if(status) {
       query.andWhere('todo.status = :status', { status });

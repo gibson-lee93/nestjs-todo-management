@@ -24,8 +24,11 @@ export class TodoController {
   constructor(private todoService: TodoService) { }
 
   @Get()
-  getTodo(@Query() filterDto: GetTodoFilterDto): Promise<Todo[]> {
-    return this.todoService.getTodo(filterDto);
+  getTodo(
+    @Query() filterDto: GetTodoFilterDto,
+    @GetUser() user: User,
+  ): Promise<Todo[]> {
+    return this.todoService.getTodo(filterDto, user);
   }
 
   @Get('/:id')

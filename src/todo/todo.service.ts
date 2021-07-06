@@ -14,8 +14,8 @@ export class TodoService {
     private todoRepository: TodoRepository,
   ) {}
 
-  getTodo(filterDto: GetTodoFilterDto): Promise<Todo[]> {
-    return this.todoRepository.getTodo(filterDto);
+  getTodo(filterDto: GetTodoFilterDto, user: User): Promise<Todo[]> {
+    return this.todoRepository.getTodo(filterDto, user);
   }
 
   async getTodoById(id: string): Promise<Todo> {
