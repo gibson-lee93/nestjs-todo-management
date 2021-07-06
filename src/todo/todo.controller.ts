@@ -32,8 +32,11 @@ export class TodoController {
   }
 
   @Get('/:id')
-  getTodoById(@Param('id') id: string): Promise<Todo> {
-    return this.todoService.getTodoById(id);
+  getTodoById(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Todo> {
+    return this.todoService.getTodoById(id, user);
   }
 
   @Post()
@@ -45,16 +48,20 @@ export class TodoController {
   }
 
   @Delete('/:id')
-  deleteTodo(@Param('id') id: string): Promise<void> {
+  deleteTodo(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
     return this.todoService.deleteTodo(id);
   }
 
   @Patch('/:id/status')
   updateTodoStatus(
     @Param('id') id: string,
-    @Body() updateTodoStatusDto: UpdateTodoStatusDto
+    @Body() updateTodoStatusDto: UpdateTodoStatusDto,
+    @GetUser() user: User,
   ): Promise<Todo> {
     const { status } = updateTodoStatusDto;
-    return this.todoService.updateTodoStatus(id, status);
+    return this.todoService.updateTodoStatus(id, status, user);
   }
 }
