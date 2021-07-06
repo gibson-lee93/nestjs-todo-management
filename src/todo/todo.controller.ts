@@ -7,7 +7,8 @@ import {
   Delete,
   Patch,
   Query,
-  UseGuards
+  UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { TodoService } from './todo.service';
@@ -21,6 +22,7 @@ import { GetUser } from '../auth/get-user.decorator';
 @Controller('todo')
 @UseGuards(AuthGuard())
 export class TodoController {
+  private logger = new Logger('TodoController');
   constructor(private todoService: TodoService) { }
 
   @Get()
@@ -28,6 +30,11 @@ export class TodoController {
     @Query() filterDto: GetTodoFilterDto,
     @GetUser() user: User,
   ): Promise<Todo[]> {
+    this.logger.verbose(
+      `User "${user.username}" retrieving all todos. Filters: ${JSON.stringify(
+        filterDto,
+      )}`,
+    );
     return this.todoService.getTodo(filterDto, user);
   }
 
@@ -36,6 +43,9 @@ export class TodoController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<Todo> {
+    this.logger.verbose(
+      `User "${user.username}" retrieving todo by id "${id}"`,
+    );
     return this.todoService.getTodoById(id, user);
   }
 
@@ -44,6 +54,11 @@ export class TodoController {
     @Body() createTodoDto: CreateTodoDto,
     @GetUser() user: User,
   ): Promise<Todo> {
+    this.logger.verbose(
+      `User "${user.username}" creating a new todo. Data: ${JSON.stringify(
+        createTodoDto
+      )}`,
+    );
     return this.todoService.createTodo(createTodoDto, user);
   }
 
@@ -52,6 +67,9 @@ export class TodoController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<void> {
+    this.logger.verbose(
+      `User "${user.username}" deleting a todo by id "${id}"`,
+    );
     return this.todoService.deleteTodo(id, user);
   }
 
@@ -61,6 +79,11 @@ export class TodoController {
     @Body() updateTodoStatusDto: UpdateTodoStatusDto,
     @GetUser() user: User,
   ): Promise<Todo> {
+    this.logger.verbose(
+      `User "${user.username}" updating a todo status by id "${id}". Status: ${
+        JSON.stringify(updateTodoStatusDto)
+      }`,
+    );
     const { status } = updateTodoStatusDto;
     return this.todoService.updateTodoStatus(id, status, user);
   }
